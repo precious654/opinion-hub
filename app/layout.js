@@ -1,7 +1,8 @@
 import { Montserrat } from "next/font/google";
-import "./globals.css";
+import "@/styles/globals.css";
+import Navbar from "@/components/Navbar";
 
-const nontserrat = Montserrat({ subsets: ["latin"] });
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Opinion hub",
@@ -11,7 +12,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>{children}</body>
+      <body className={montserrat.className}>
+        <div className="container">
+          <Navbar />
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
