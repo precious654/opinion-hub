@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.container{
+    inline-size: 80%;
+    margin: auto;
+}
+
+@media(max-width: 456px) {
+    .container{
+        inline-size: 90%;
+        margin: auto;
+    }
+}
