@@ -9,16 +9,16 @@ import { useSession, signIn, signOut, getProviders } from "next-auth/react";
 
 function Navbar() {
 
-  const isLoggedIn = true;
+  const {data: session} = useSession();
   const[providers, setProviders] = React.useState(null);
-  const [toggleDropdown, setToggleDropdown] = React.useState(true);
+  const [toggleDropdown, setToggleDropdown] = React.useState(false);
 
   React.useEffect( () => {
-    const setProvider = async () => {
+    const setUpProvider = async () => {
       const response = await getProviders();
       setProviders(response);
     } 
-    setProvider();
+    setUpProvider();
   }, [])
 
   return (
@@ -27,9 +27,9 @@ function Navbar() {
         <h1 className="text-2xl font-semibold">Opinion Hub</h1> 
       </Link> 
       {
-        isLoggedIn ? (
+        session?.user ? (
           <div>
-            <div className='sm:flex gap-5 hidden'>
+            <div className='sm:flex gap-5 hidden items-center'>
               <Link href="/addOpinion">
                 <Icon icon="jam:write" width={26} />
               </Link>
@@ -37,8 +37,8 @@ function Navbar() {
                 <Icon icon="material-symbols:logout-sharp" width={26} onClick={ () => signOut() } />
               </div>
               <Link href="/profile">
-                <Image 
-                src="/profile.webp"
+                <img 
+                src={session?.user.image}
                 width={34} 
                 height={34} 
                 className="rounded-full" 
@@ -47,8 +47,8 @@ function Navbar() {
             </div>
 
             <div className="sm:hidden flex flex-col gap-3 items-end">
-              <Image 
-                  src="/profile.webp"
+              <img 
+                  src={session?.user.image}
                   width={34} 
                   height={34} 
                   className="rounded-full"
@@ -83,7 +83,9 @@ function Navbar() {
             {
               providers && Object.values(providers).map(
                 (provider) => (
-                  <Icon icon="uil:signin" width={26} onClick={() => signIn()} />
+                  <div key={provider.name}>
+                    <Icon icon="uil:signin" width={26} onClick={() => signIn()} />
+                  </div>
                 ) 
               )
             }
